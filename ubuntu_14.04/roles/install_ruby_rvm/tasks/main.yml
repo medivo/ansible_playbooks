@@ -1,0 +1,20 @@
+---
+# don't install gem docs
+- shell: 'echo "gem: --no-rdoc --no-ri" > ~/.gemrc'
+
+# get checksum needed for rvm
+- shell: command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+
+# install rvm and latest ruby version
+- shell: \curl -sSL https://get.rvm.io | bash
+
+# install ruby 2.2.2
+- shell: $HOME/.rvm/bin/rvm install 2.2.2
+
+# set ruby-2.2.2 as default
+- shell: $HOME/.rvm/bin/rvm alias create default ruby-2.2.2
+
+- shell: echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+
+# install bundler
+- shell: bash -lc "gem install bundler"

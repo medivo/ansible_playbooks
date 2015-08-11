@@ -1,0 +1,25 @@
+---
+- name: install postgresql
+  apt: name=postgresql state=present
+- name: install postgresql-contrib
+  apt: name=postgresql-contrib state=present
+- name: install python-pip
+  apt: name=python-pip state=present
+- name: install python-dev
+  apt: name=python-dev state=present
+
+- command: pip install psycopg2
+
+# create postgresql 'deploy' user
+- name: create {{ user }} user
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: name={{ user }} password={{ password }} role_attr_flags=CREATEDB
+
+# create database for app
+- name: Create postgres database
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db:
+    name: "{{ app_db }}"
+    owner: "{{ user }}"

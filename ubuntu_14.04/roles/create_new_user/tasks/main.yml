@@ -1,0 +1,15 @@
+---
+- name: create {{ new_user }} user
+  user: name="{{ new_user }}"
+        state=present
+
+# change config so sudo does not prompt for password for deploy user
+- lineinfile: dest=/etc/sudoers state=present insertafter="gibberish" line="{{ new_user }} ALL=(ALL) NOPASSWD:ALL"
+
+# copy authorized keys from default_user to newly-created user
+- command: sudo -u {{ new_user }} mkdir /home/{{ new_user }}/.ssh
+- command: cp /home/{{ default_user }}/.ssh/authorized_keys /home/{{ new_user }}/.ssh/authorized_keys
+- command: chmod 600 /home/{{ new_user }}/.ssh/authorized_keys
+- command: chown -R {{ new_user }} /home/{{ new_user }}
+
+- shell: sudo chsh -s /bin/bash {{ new_user }}

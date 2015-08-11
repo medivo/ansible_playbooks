@@ -1,0 +1,17 @@
+---
+- shell: 'echo "gem: --no-rdoc --no-ri" > ~/.gemrc'
+
+- shell: mkdir ~/.rbenv
+- shell: chdir=~/.rbenv git clone git://github.com/sstephenson/rbenv.git
+- shell: echo 'export PATH="$HOME/.rbenv/rbenv/bin:$PATH"' >> ~/.bash_profile
+- shell: echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+
+- shell: git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+- shell: echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bash_profile
+- shell: bash -lc 'source ~/.bash_profile'
+
+- shell: bash -lc '$HOME/.rbenv/rbenv/bin/rbenv install -v 2.2.2'
+- shell: bash -lc '$HOME/.rbenv/rbenv/bin/rbenv global 2.2.2'
+
+- shell: bash -lc '$HOME/.rbenv/rbenv/bin/rbenv rehash'
+- shell: bash -lc '$HOME/.rbenv/shims/gem install bundler'
