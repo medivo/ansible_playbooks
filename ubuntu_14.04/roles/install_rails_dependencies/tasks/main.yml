@@ -1,0 +1,13 @@
+---
+- name: install nodejs
+  apt: name=nodejs state=present
+
+# set environment variables
+- name: set RAILS_ENV to production
+  lineinfile: dest=/etc/environment state=present insertafter="gibberish" line="export RAILS_ENV=production"
+
+- name: set RAILS_SERVE_STATIC_FILES to 1
+  lineinfile: dest=/etc/environment state=present insertafter="gibberish" line="export RAILS_SERVE_STATIC_FILES=1"
+
+
+

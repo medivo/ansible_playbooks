@@ -1,0 +1,22 @@
+---
+- name: install nginx
+  apt: name=nginx state=present
+
+# check for the existence of nginx.conf
+- name: stat nginx.conf
+  stat: path=/etc/nginx/nginx.conf
+  register: nginx_conf_stat
+
+- name: Move nginx.conf to nginx.conf.backup
+  command: mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+  when: nginx_conf_stat.stat.exists
+
+- name: copy nginx.conf
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: stat /etc/nginx/servers
+  stat: path=/etc/nginx/servers
+  register: servers_stat
+
+- name: Assures /etc/nginx/servers dir exists
+  file: path=/etc/nginx/servers state=directory
